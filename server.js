@@ -65,7 +65,7 @@ const updateFile = () => {
         JSON.stringify({
                 nowServing,
                 queue,
-                violations
+                violations,
             },
             null,
             2
@@ -98,10 +98,7 @@ app.post('/add_violation', (req, res) => {
     writeLock.acquire();
     // receive object from front-end
     const { team, rule, severity } = req.body;
-    console.log(team)
-    console.log(rule)
-    console.log(severity)
-        // add violation to JSON file
+    // add violation to JSON file
     violations.push({ number: team, ruleId: rule, severity: severity });
     updateFile();
     updateClients();
@@ -151,33 +148,63 @@ app.post('/remove', (req, res) => {
     res.status(200).json({ team });
 });
 
+app.post('/remove_violation', (req, res) => {
+    writeLock.acquire();
+    const { team, rule, severity } = req.body;
+    // find first instance of violation that matches team, rule and sev
+    for (let i = 0; i < violations.length; i++) {
+        if (violations.at(i).number === team && violations.at(i).ruleId === rule && violations.at(i).severity === severity) {
+            violations.splice(i, 1);
+            console.log("found");
+            break;
+        }
+    }
+    updateFile();
+    updateClients();
+    writeLock.release();
+    res.status(200).json({ team, rule, severity });
+});
+
 app.get('/teams', async(req, res) => {
     //const html = await axios.get(SERVER_PATH);
     //const $ = cheerio.load(html.data);
 
+
+
+
     const teamData = [
-        { number: "98549A", school: "Burnsview" },
-        { number: "98549B", school: "Burnsview" },
-        { number: "98549C", school: "Burnsview" },
-        { number: "98549D", school: "Burnsview" },
-        { number: "98549E", school: "Burnsview" },
-        { number: "98549F", school: "Burnsview" },
-        { number: "98549G", school: "Burnsview" },
-        { number: "98549H", school: "Burnsview" },
-        { number: "98549K", school: "Burnsview" },
-        { number: "98549M", school: "Burnsview" },
-        { number: "98549N", school: "Burnsview" },
-        { number: "98549P", school: "Burnsview" },
-        { number: "98549Q", school: "Burnsview" },
-        { number: "98549R", school: "Burnsview" },
-        { number: "98549S", school: "Burnsview" },
-        { number: "98549T", school: "Burnsview" },
-        { number: "98549U", school: "Burnsview" },
-        { number: "98549V", school: "Burnsview" },
-        { number: "98549W", school: "Burnsview" },
-        { number: "98549X", school: "Burnsview" },
-        { number: "98549Y", school: "Burnsview" },
-        { number: "98549Z", school: "Burnsview" }
+        { number: "502A", school: "" },
+        { number: "502U", school: "" },
+        { number: "502W", school: "" },
+        { number: "502X", school: "" },
+        { number: "502Z", school: "" },
+        { number: "604X", school: "" },
+        { number: "604Y", school: "" },
+        { number: "886N", school: "" },
+        { number: "886Y", school: "" },
+        { number: "886Z", school: "" },
+        { number: "1010A", school: "" },
+        { number: "1010B", school: "" },
+        { number: "1010N", school: "" },
+        { number: "1010T", school: "" },
+        { number: "1010W", school: "" },
+        { number: "1010X", school: "" },
+        { number: "1010Y", school: "" },
+        { number: "1010Z", school: "" },
+        { number: "1011T", school: "" },
+        { number: "1011Z", school: "" },
+        { number: "6408F", school: "" },
+        { number: "9181C", school: "" },
+        { number: "9181E", school: "" },
+        { number: "9181F", school: "" },
+        { number: "9181S", school: "" },
+        { number: "9181T", school: "" },
+        { number: "9181X", school: "" },
+        { number: "9594A", school: "" },
+        { number: "9594J", school: "" },
+        { number: "9652A", school: "" },
+        { number: "77174B", school: "" },
+        { number: "98549V", school: "" },
     ];
     /*$('tbody tr').each((index, element) => {
       const $tds = $(element).find('td');
