@@ -59,6 +59,29 @@ if (fileData) {
 }
 
 const updateFile = () => {
+    // sort violations in an order
+    violations.sort((a, b) => {
+        // sort numbers
+        const intA = parseInt(a.number);
+        const intB = parseInt(b.number);
+        if (intA < intB) {
+            return -1;
+        }
+        if (intA > intB) {
+            return 1;
+        }
+
+        // sort letters
+        const nameA = a.number.substring(a.length);
+        const nameB = b.number.substring(b.length);
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+        return 0;
+    });
     // Write the array to a JSON file
     fs.writeFileSync(
         dbFile,
