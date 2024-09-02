@@ -189,59 +189,57 @@ app.post('/remove_violation', (req, res) => {
 });
 
 app.get('/teams', async(req, res) => {
-    //const html = await axios.get(SERVER_PATH);
-    //const $ = cheerio.load(html.data);
+    const html = await axios.get(SERVER_PATH);
+    const $ = cheerio.load(html.data);
 
+    const teamData = [];
+    // const teamData = [
+    //     { number: "502A", school: "" },
+    //     { number: "502U", school: "" },
+    //     { number: "502W", school: "" },
+    //     { number: "502X", school: "" },
+    //     { number: "502Z", school: "" },
+    //     { number: "604X", school: "" },
+    //     { number: "604Y", school: "" },
+    //     { number: "886N", school: "" },
+    //     { number: "886Y", school: "" },
+    //     { number: "886Z", school: "" },
+    //     { number: "1010A", school: "" },
+    //     { number: "1010B", school: "" },
+    //     { number: "1010N", school: "" },
+    //     { number: "1010T", school: "" },
+    //     { number: "1010W", school: "" },
+    //     { number: "1010X", school: "" },
+    //     { number: "1010Y", school: "" },
+    //     { number: "1010Z", school: "" },
+    //     { number: "1011T", school: "" },
+    //     { number: "1011Z", school: "" },
+    //     { number: "6408F", school: "" },
+    //     { number: "9181C", school: "" },
+    //     { number: "9181E", school: "" },
+    //     { number: "9181F", school: "" },
+    //     { number: "9181S", school: "" },
+    //     { number: "9181T", school: "" },
+    //     { number: "9181X", school: "" },
+    //     { number: "9594A", school: "" },
+    //     { number: "9594J", school: "" },
+    //     { number: "9652A", school: "" },
+    //     { number: "77174B", school: "" },
+    //     { number: "98549V", school: "" },
+    // ];
+    $('tbody tr').each((index, element) => {
+        const $tds = $(element).find('td');
+        const number = $tds
+            .eq(0)
+            .text()
+            .trim();
+        const school = $tds
+            .eq(3)
+            .text()
+            .trim();
 
-
-
-    const teamData = [
-        { number: "502A", school: "" },
-        { number: "502U", school: "" },
-        { number: "502W", school: "" },
-        { number: "502X", school: "" },
-        { number: "502Z", school: "" },
-        { number: "604X", school: "" },
-        { number: "604Y", school: "" },
-        { number: "886N", school: "" },
-        { number: "886Y", school: "" },
-        { number: "886Z", school: "" },
-        { number: "1010A", school: "" },
-        { number: "1010B", school: "" },
-        { number: "1010N", school: "" },
-        { number: "1010T", school: "" },
-        { number: "1010W", school: "" },
-        { number: "1010X", school: "" },
-        { number: "1010Y", school: "" },
-        { number: "1010Z", school: "" },
-        { number: "1011T", school: "" },
-        { number: "1011Z", school: "" },
-        { number: "6408F", school: "" },
-        { number: "9181C", school: "" },
-        { number: "9181E", school: "" },
-        { number: "9181F", school: "" },
-        { number: "9181S", school: "" },
-        { number: "9181T", school: "" },
-        { number: "9181X", school: "" },
-        { number: "9594A", school: "" },
-        { number: "9594J", school: "" },
-        { number: "9652A", school: "" },
-        { number: "77174B", school: "" },
-        { number: "98549V", school: "" },
-    ];
-    /*$('tbody tr').each((index, element) => {
-      const $tds = $(element).find('td');
-      const number = $tds
-        .eq(0)
-        .text()
-        .trim();
-      const school = $tds
-        .eq(3)
-        .text()
-        .trim();
-
-      teamData.push({ number, school });
-    });*/
+        teamData.push({ number, school });
+    });
 
     res.status(200).json(teamData);
 });
